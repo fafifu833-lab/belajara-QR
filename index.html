@@ -1,25 +1,67 @@
+<!-- Paket: A-Frame 1.0.4 + AR.js 3.3.2 -->
 <!DOCTYPE html>
 <html>
 <head>
-    <title>AR Alternatif Tanpa ARCore</title>
-    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
-    <script src="https://raw.githack.com/AR-js-org/AR.js/3.3.2/aframe/build/aframe-ar.js"></script>
+  <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+  <script src="https://raw.githack.com/AR-js-org/AR.js/3.3.2/aframe/build/aframe-ar.js"></script>
 </head>
-<body style="margin : 0px; overflow: hidden;">
+<body style="margin:0;overflow:hidden">
+<a-scene embedded
+  arjs="sourceType:webcam;debugUIEnabled:false">
 
-    <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3;">
-        
-        <a-marker preset="hiro">
-            
-            <a-box position="0 0.5 0" 
-                   material="color: #ff0000; opacity: 0.8;" 
-                   animation="property: rotation; to: 0 360 0; loop: true; dur: 5000">
-            </a-box>
-            
-        </a-marker>
+  <a-marker preset="hiro">
+    <!-- LANGIT: gradient box besar di atas -->
+    <a-box position="0 5 -3" width="20" height="8" depth="0.1"
+           color="#87CEEB"></a-box>
 
-        <a-entity camera></a-entity>
-        
-    </a-scene>
-</body>
-</html>
+    <!-- MATAHARI blocky -->
+    <a-box position="3 6 -2" scale="0.8 0.8 0.2"
+           color="#FFD700"
+           animation="property:rotation;to:0 0 360;loop:true;dur:20000"
+    ></a-box>
+
+    <!-- TANAH: baseplate hijau Roblox -->
+    <a-box position="0 -0.05 0" width="10" height="0.1" depth="10"
+           color="#5D8A3C"></a-box>
+
+    <!-- POHON 1 -->
+    <a-box position="-2 0.5 -1" scale="0.3 1 0.3" color="#8B5E3C"></a-box>
+    <a-box position="-2 1.3 -1" scale="1.2 0.8 1.2" color="#2E7D32"></a-box>
+    <a-box position="-2 1.9 -1" scale="0.9 0.5 0.9" color="#388E3C"></a-box>
+
+    <!-- POHON 2 -->
+    <a-box position="2.5 0.5 -1.5" scale="0.3 1.2 0.3" color="#8B5E3C"></a-box>
+    <a-box position="2.5 1.5 -1.5" scale="1.4 1 1.4" color="#1B5E20"></a-box>
+    <a-box position="2.5 2.2 -1.5" scale="1 0.6 1" color="#2E7D32"></a-box>
+
+    <!-- RUMAH -->
+    <a-box position="0 0.7 -2" scale="2 1.4 2" color="#FFECB3"></a-box>
+    <a-box position="0 1.7 -2" scale="2.2 0.8 2.2"
+           rotation="45 0 0" color="#E53935"></a-box>
+    <a-box position="0 0.3 -1" scale="0.4 0.8 0.05" color="#8D6E63"></a-box>
+
+    <!-- KARAKTER ROBLOX -->
+    <!-- kepala -->
+    <a-box position="1 1.7 0" scale="0.5 0.5 0.5" color="#FFCC80"></a-box>
+    <!-- badan -->
+    <a-box position="1 1.15 0" scale="0.5 0.6 0.3" color="#1565C0"
+           animation="property:rotation;to:0 360 0;loop:true;dur:6000"
+    ></a-box>
+    <!-- kaki -->
+    <a-box position="0.88 0.65 0" scale="0.2 0.5 0.25" color="#1A237E"></a-box>
+    <a-box position="1.12 0.65 0" scale="0.2 0.5 0.25" color="#1A237E"></a-box>
+
+    <!-- KOIN melayang -->
+    <a-cylinder position="-0.5 1.5 0.5" radius="0.15" height="0.05"
+               color="#FFD700"
+               animation="property:position;to:-0.5 1.9 0.5;loop:true;dir:alternate;dur:1500"
+    ></a-cylinder>
+    <a-cylinder position="0 1.8 0.8" radius="0.15" height="0.05"
+               color="#FFD700"
+               animation="property:position;to:0 2.2 0.8;loop:true;dir:alternate;dur:1800"
+    ></a-cylinder>
+
+  </a-marker>
+  <a-entity camera></a-entity>
+</a-scene>
+</body></html>
