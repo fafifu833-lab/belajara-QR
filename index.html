@@ -1,67 +1,379 @@
-<!-- Paket: A-Frame 1.0.4 + AR.js 3.3.2 -->
 <!DOCTYPE html>
 <html>
 <head>
-  <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
-  <script src="https://raw.githack.com/AR-js-org/AR.js/3.3.2/aframe/build/aframe-ar.js"></script>
+    <title>AR Roblox World - Upgraded</title>
+    <meta charset="UTF-8">
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/3.3.2/aframe/build/aframe-ar.js"></script>
+    <style>
+        * { margin: 0; padding: 0; }
+        body { overflow: hidden; }
+    </style>
 </head>
-<body style="margin:0;overflow:hidden">
-<a-scene embedded
-  arjs="sourceType:webcam;debugUIEnabled:false">
+<body>
+<a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3;">
 
-  <a-marker preset="hiro">
-    <!-- LANGIT: gradient box besar di atas -->
-    <a-box position="0 5 -3" width="20" height="8" depth="0.1"
-           color="#87CEEB"></a-box>
+    <!-- ========== ASSETS ========== -->
+    <a-assets>
+        <!-- Komponen karakter Roblox berjalan -->
+        <a-mixin id="roblox-head"
+            geometry="primitive: box; width: 0.45; height: 0.45; depth: 0.45"
+            material="color: #FFCC80">
+        </a-mixin>
+        <a-mixin id="roblox-body"
+            geometry="primitive: box; width: 0.5; height: 0.55; depth: 0.3"
+            material="color: #1565C0">
+        </a-mixin>
+    </a-assets>
 
-    <!-- MATAHARI blocky -->
-    <a-box position="3 6 -2" scale="0.8 0.8 0.2"
-           color="#FFD700"
-           animation="property:rotation;to:0 0 360;loop:true;dur:20000"
-    ></a-box>
+    <a-marker preset="hiro">
 
-    <!-- TANAH: baseplate hijau Roblox -->
-    <a-box position="0 -0.05 0" width="10" height="0.1" depth="10"
-           color="#5D8A3C"></a-box>
+        <!-- ============================= -->
+        <!-- BACKGROUND: LANGIT ROBLOX     -->
+        <!-- ============================= -->
+        <a-sky color="#87CEEB"></a-sky>
 
-    <!-- POHON 1 -->
-    <a-box position="-2 0.5 -1" scale="0.3 1 0.3" color="#8B5E3C"></a-box>
-    <a-box position="-2 1.3 -1" scale="1.2 0.8 1.2" color="#2E7D32"></a-box>
-    <a-box position="-2 1.9 -1" scale="0.9 0.5 0.9" color="#388E3C"></a-box>
+        <!-- TANAH / BASEPLATE HIJAU -->
+        <a-box position="0 -0.05 0"
+               width="14" height="0.1" depth="14"
+               color="#5D8A3C"
+               material="roughness: 0.8">
+        </a-box>
 
-    <!-- POHON 2 -->
-    <a-box position="2.5 0.5 -1.5" scale="0.3 1.2 0.3" color="#8B5E3C"></a-box>
-    <a-box position="2.5 1.5 -1.5" scale="1.4 1 1.4" color="#1B5E20"></a-box>
-    <a-box position="2.5 2.2 -1.5" scale="1 0.6 1" color="#2E7D32"></a-box>
+        <!-- Grid baseplate (stripe dekoratif) -->
+        <a-box position="0 -0.04 -2" width="14" height="0.02" depth="0.05" color="#4a7a2e"></a-box>
+        <a-box position="0 -0.04 0"  width="14" height="0.02" depth="0.05" color="#4a7a2e"></a-box>
+        <a-box position="0 -0.04 2"  width="14" height="0.02" depth="0.05" color="#4a7a2e"></a-box>
+        <a-box position="-2 -0.04 0" width="0.05" height="0.02" depth="14" color="#4a7a2e"></a-box>
+        <a-box position="0  -0.04 0" width="0.05" height="0.02" depth="14" color="#4a7a2e"></a-box>
+        <a-box position="2  -0.04 0" width="0.05" height="0.02" depth="14" color="#4a7a2e"></a-box>
 
-    <!-- RUMAH -->
-    <a-box position="0 0.7 -2" scale="2 1.4 2" color="#FFECB3"></a-box>
-    <a-box position="0 1.7 -2" scale="2.2 0.8 2.2"
-           rotation="45 0 0" color="#E53935"></a-box>
-    <a-box position="0 0.3 -1" scale="0.4 0.8 0.05" color="#8D6E63"></a-box>
+        <!-- ============================= -->
+        <!-- MATAHARI BLOCKY BERPUTAR      -->
+        <!-- ============================= -->
+        <a-entity position="4 6 -6">
+            <a-box scale="0.9 0.9 0.2" color="#FFD700"
+                animation="property: rotation; to: 0 0 360; loop: true; dur: 18000; easing: linear">
+            </a-box>
+            <!-- Sinar matahari -->
+            <a-box position="0 1.1 0"  scale="0.15 0.5 0.1" color="#FFD700"></a-box>
+            <a-box position="0 -1.1 0" scale="0.15 0.5 0.1" color="#FFD700"></a-box>
+            <a-box position="1.1 0 0"  scale="0.5 0.15 0.1" color="#FFD700"></a-box>
+            <a-box position="-1.1 0 0" scale="0.5 0.15 0.1" color="#FFD700"></a-box>
+            <a-box position="0.8 0.8 0"  scale="0.35 0.15 0.1" rotation="0 0 45" color="#FFD700"></a-box>
+            <a-box position="-0.8 0.8 0" scale="0.35 0.15 0.1" rotation="0 0 -45" color="#FFD700"></a-box>
+            <a-box position="0.8 -0.8 0"  scale="0.35 0.15 0.1" rotation="0 0 -45" color="#FFD700"></a-box>
+            <a-box position="-0.8 -0.8 0" scale="0.35 0.15 0.1" rotation="0 0 45" color="#FFD700"></a-box>
+        </a-entity>
 
-    <!-- KARAKTER ROBLOX -->
-    <!-- kepala -->
-    <a-box position="1 1.7 0" scale="0.5 0.5 0.5" color="#FFCC80"></a-box>
-    <!-- badan -->
-    <a-box position="1 1.15 0" scale="0.5 0.6 0.3" color="#1565C0"
-           animation="property:rotation;to:0 360 0;loop:true;dur:6000"
-    ></a-box>
-    <!-- kaki -->
-    <a-box position="0.88 0.65 0" scale="0.2 0.5 0.25" color="#1A237E"></a-box>
-    <a-box position="1.12 0.65 0" scale="0.2 0.5 0.25" color="#1A237E"></a-box>
+        <!-- AWAN 1 -->
+        <a-entity position="-3 4.5 -5"
+            animation="property: position; from: -3 4.5 -5; to: 3 4.5 -5; loop: true; dir: alternate; dur: 12000; easing: linear">
+            <a-box position="0 0 0"    scale="1.6 0.5 0.3" color="white"></a-box>
+            <a-box position="-0.4 0.3 0" scale="0.8 0.4 0.3" color="white"></a-box>
+            <a-box position="0.4 0.25 0" scale="0.7 0.35 0.3" color="white"></a-box>
+        </a-entity>
 
-    <!-- KOIN melayang -->
-    <a-cylinder position="-0.5 1.5 0.5" radius="0.15" height="0.05"
-               color="#FFD700"
-               animation="property:position;to:-0.5 1.9 0.5;loop:true;dir:alternate;dur:1500"
-    ></a-cylinder>
-    <a-cylinder position="0 1.8 0.8" radius="0.15" height="0.05"
-               color="#FFD700"
-               animation="property:position;to:0 2.2 0.8;loop:true;dir:alternate;dur:1800"
-    ></a-cylinder>
+        <!-- AWAN 2 -->
+        <a-entity position="2 5 -7"
+            animation="property: position; from: 2 5 -7; to: -2 5 -7; loop: true; dir: alternate; dur: 16000; easing: linear">
+            <a-box position="0 0 0"    scale="1.2 0.4 0.3" color="white"></a-box>
+            <a-box position="0.3 0.25 0" scale="0.6 0.35 0.3" color="white"></a-box>
+        </a-entity>
 
-  </a-marker>
-  <a-entity camera></a-entity>
+        <!-- ============================= -->
+        <!-- POHON 1 (kiri)                -->
+        <!-- ============================= -->
+        <a-entity position="-3 0 -2">
+            <a-box position="0 0.55 0" scale="0.28 1.1 0.28" color="#6D4C41"></a-box>
+            <a-box position="0 1.4 0"  scale="1.4 0.85 1.4"  color="#2E7D32"></a-box>
+            <a-box position="0 2.0 0"  scale="1.1 0.6 1.1"   color="#388E3C"></a-box>
+            <a-box position="0 2.45 0" scale="0.75 0.5 0.75"  color="#43A047"></a-box>
+            <!-- Animasi goyang angin pohon -->
+            <a-box position="0 2.7 0" scale="0.4 0.3 0.4" color="#66BB6A"
+                animation="property: rotation; from: 0 0 -5; to: 0 0 5; loop: true; dir: alternate; dur: 2000; easing: easeInOutSine">
+            </a-box>
+        </a-entity>
+
+        <!-- POHON 2 (kanan) -->
+        <a-entity position="3.2 0 -2.5">
+            <a-box position="0 0.6 0"  scale="0.3 1.2 0.3"  color="#6D4C41"></a-box>
+            <a-box position="0 1.5 0"  scale="1.6 1.0 1.6"  color="#1B5E20"></a-box>
+            <a-box position="0 2.2 0"  scale="1.2 0.7 1.2"  color="#2E7D32"></a-box>
+            <a-box position="0 2.7 0"  scale="0.8 0.5 0.8"  color="#388E3C"></a-box>
+            <a-box position="0 3.05 0" scale="0.45 0.35 0.45" color="#43A047"
+                animation="property: rotation; from: 0 0 -6; to: 0 0 6; loop: true; dir: alternate; dur: 2400; easing: easeInOutSine">
+            </a-box>
+        </a-entity>
+
+        <!-- POHON 3 (kanan jauh) -->
+        <a-entity position="4.5 0 -4">
+            <a-box position="0 0.5 0" scale="0.2 1.0 0.2" color="#6D4C41"></a-box>
+            <a-box position="0 1.3 0" scale="1.0 0.7 1.0"  color="#33691E"></a-box>
+            <a-box position="0 1.8 0" scale="0.7 0.5 0.7"  color="#558B2F"></a-box>
+        </a-entity>
+
+        <!-- ============================= -->
+        <!-- RUMAH ROBLOX                  -->
+        <!-- ============================= -->
+        <!-- Pondasi -->
+        <a-box position="0.2 0.08 -2.5" scale="2.6 0.16 2.2" color="#8D6E63"></a-box>
+        <!-- Dinding -->
+        <a-box position="0.2 0.85 -2.5" scale="2.4 1.5 2.0" color="#FFECB3"></a-box>
+        <!-- Atap depan (bentuk segitiga box miring) -->
+        <a-box position="0.2 1.8 -2.5"  scale="2.6 0.1 2.2" color="#E53935"></a-box>
+        <a-box position="0.2 2.0 -2.5"  scale="2.4 0.1 2.0" color="#E53935"></a-box>
+        <a-box position="0.2 2.18 -2.5" scale="2.0 0.1 1.7" color="#C62828"></a-box>
+        <a-box position="0.2 2.34 -2.5" scale="1.6 0.1 1.4" color="#C62828"></a-box>
+        <a-box position="0.2 2.48 -2.5" scale="1.2 0.1 1.1" color="#B71C1C"></a-box>
+        <a-box position="0.2 2.58 -2.5" scale="0.8 0.1 0.8" color="#B71C1C"></a-box>
+        <a-box position="0.2 2.66 -2.5" scale="0.4 0.1 0.5" color="#B71C1C"></a-box>
+        <!-- Pintu -->
+        <a-box position="0.2 0.55 -1.51" scale="0.4 0.9 0.05" color="#8D6E63"></a-box>
+        <a-box position="0.34 0.79 -1.51" scale="0.04 0.04 0.04" color="#FFD700"></a-box>
+        <!-- Jendela kiri -->
+        <a-box position="-0.55 0.9 -1.51" scale="0.5 0.4 0.05" color="#90CAF9"></a-box>
+        <a-box position="-0.55 0.9 -1.52" scale="0.02 0.4 0.01" color="white"></a-box>
+        <a-box position="-0.55 0.9 -1.52" scale="0.5 0.02 0.01" color="white"></a-box>
+        <!-- Jendela kanan -->
+        <a-box position="0.95 0.9 -1.51" scale="0.5 0.4 0.05" color="#90CAF9"></a-box>
+        <a-box position="0.95 0.9 -1.52" scale="0.02 0.4 0.01" color="white"></a-box>
+        <a-box position="0.95 0.9 -1.52" scale="0.5 0.02 0.01" color="white"></a-box>
+        <!-- Cerobong asap -->
+        <a-box position="0.8 2.8 -2.5" scale="0.3 0.5 0.3" color="#8D6E63"></a-box>
+        <!-- Asap cerobong naik -->
+        <a-sphere position="0.8 3.2 -2.5" radius="0.12" color="#BDBDBD" opacity="0.6"
+            animation="property: position; from: 0.8 3.1 -2.5; to: 1.0 3.8 -2.5; loop: true; dur: 2500; easing: easeInOutSine">
+        </a-sphere>
+        <a-sphere position="0.9 3.5 -2.5" radius="0.1" color="#E0E0E0" opacity="0.5"
+            animation="property: position; from: 0.9 3.3 -2.5; to: 1.2 4.1 -2.5; loop: true; dur: 3000; easing: easeInOutSine">
+        </a-sphere>
+
+        <!-- ============================= -->
+        <!-- KARAKTER 1: BAJU BIRU BERJALAN-->
+        <!-- ============================= -->
+        <!-- Karakter berjalan dari kiri ke kanan -->
+        <a-entity id="char1"
+            animation="property: position; from: -4 0 1; to: 4 0 1; loop: true; dir: alternate; dur: 6000; easing: linear">
+
+            <!-- Kepala + bob naik turun saat jalan -->
+            <a-entity animation="property: position; from: 0 1.68 0; to: 0 1.75 0; loop: true; dir: alternate; dur: 300; easing: easeInOutSine">
+                <a-box scale="0.45 0.45 0.45" color="#FFCC80">
+                    <!-- Mata kiri -->
+                    <a-box position="-0.1 0.04 0.5" scale="0.15 0.18 0.05" color="#1a1a1a"></a-box>
+                    <!-- Mata kanan -->
+                    <a-box position="0.1 0.04 0.5"  scale="0.15 0.18 0.05" color="#1a1a1a"></a-box>
+                    <!-- Mulut senyum -->
+                    <a-box position="0 -0.1 0.5" scale="0.25 0.05 0.05" color="#1a1a1a"></a-box>
+                </a-box>
+            </a-entity>
+
+            <!-- Badan -->
+            <a-box position="0 1.15 0" scale="0.5 0.55 0.3" color="#1565C0"></a-box>
+
+            <!-- Lengan kiri (animasi ayun jalan) -->
+            <a-entity position="-0.35 1.15 0">
+                <a-box scale="0.18 0.5 0.18" color="#1565C0"
+                    animation="property: rotation; from: 40 0 0; to: -40 0 0; loop: true; dir: alternate; dur: 300; easing: easeInOutSine">
+                </a-box>
+                <!-- Tangan kiri -->
+                <a-box position="0 -0.32 0" scale="0.18 0.22 0.18" color="#FFCC80"></a-box>
+            </a-entity>
+
+            <!-- Lengan kanan (ayun berlawanan) -->
+            <a-entity position="0.35 1.15 0">
+                <a-box scale="0.18 0.5 0.18" color="#1565C0"
+                    animation="property: rotation; from: -40 0 0; to: 40 0 0; loop: true; dir: alternate; dur: 300; easing: easeInOutSine">
+                </a-box>
+                <!-- Tangan kanan -->
+                <a-box position="0 -0.32 0" scale="0.18 0.22 0.18" color="#FFCC80"></a-box>
+            </a-entity>
+
+            <!-- Kaki kiri (animasi langkah) -->
+            <a-entity position="-0.14 0.6 0">
+                <a-box scale="0.2 0.55 0.22" color="#1A237E"
+                    animation="property: rotation; from: -35 0 0; to: 35 0 0; loop: true; dir: alternate; dur: 300; easing: easeInOutSine">
+                </a-box>
+                <!-- Sepatu kiri -->
+                <a-box position="0 -0.38 0.05" scale="0.22 0.12 0.3" color="#212121"></a-box>
+            </a-entity>
+
+            <!-- Kaki kanan (berlawanan dengan kiri) -->
+            <a-entity position="0.14 0.6 0">
+                <a-box scale="0.2 0.55 0.22" color="#1A237E"
+                    animation="property: rotation; from: 35 0 0; to: -35 0 0; loop: true; dir: alternate; dur: 300; easing: easeInOutSine">
+                </a-box>
+                <!-- Sepatu kanan -->
+                <a-box position="0 -0.38 0.05" scale="0.22 0.12 0.3" color="#212121"></a-box>
+            </a-entity>
+
+        </a-entity>
+
+        <!-- ============================= -->
+        <!-- KARAKTER 2: BAJU MERAH LONCAT -->
+        <!-- ============================= -->
+        <a-entity id="char2" position="2 0 0.5">
+            <!-- Lompat naik turun -->
+            <a-entity
+                animation="property: position; from: 0 0 0; to: 0 0.8 0; loop: true; dir: alternate; dur: 700; easing: easeOutBounce">
+
+                <!-- Kepala -->
+                <a-box position="0 1.65 0" scale="0.42 0.42 0.42" color="#FFCC80">
+                    <a-box position="-0.1 0.04 0.5"  scale="0.14 0.17 0.05" color="#1a1a1a"></a-box>
+                    <a-box position="0.1 0.04 0.5"   scale="0.14 0.17 0.05" color="#1a1a1a"></a-box>
+                    <a-box position="0 -0.1 0.5"     scale="0.22 0.05 0.05" color="#1a1a1a"></a-box>
+                </a-box>
+
+                <!-- Badan merah -->
+                <a-box position="0 1.1 0" scale="0.48 0.52 0.28" color="#C62828"></a-box>
+
+                <!-- Lengan kiri -->
+                <a-box position="-0.33 1.1 0" scale="0.17 0.48 0.17" color="#C62828"
+                    animation="property: rotation; from: 0 0 -30; to: 0 0 30; loop: true; dir: alternate; dur: 700">
+                </a-box>
+                <!-- Lengan kanan -->
+                <a-box position="0.33 1.1 0" scale="0.17 0.48 0.17" color="#C62828"
+                    animation="property: rotation; from: 0 0 30; to: 0 0 -30; loop: true; dir: alternate; dur: 700">
+                </a-box>
+
+                <!-- Kaki kiri -->
+                <a-box position="-0.12 0.58 0" scale="0.19 0.5 0.2" color="#4527A0"
+                    animation="property: rotation; from: -20 0 0; to: 20 0 0; loop: true; dir: alternate; dur: 700">
+                </a-box>
+                <!-- Kaki kanan -->
+                <a-box position="0.12 0.58 0" scale="0.19 0.5 0.2" color="#4527A0"
+                    animation="property: rotation; from: 20 0 0; to: -20 0 0; loop: true; dir: alternate; dur: 700">
+                </a-box>
+
+                <!-- Sepatu -->
+                <a-box position="-0.12 0.27 0.05" scale="0.21 0.1 0.28" color="#212121"></a-box>
+                <a-box position="0.12 0.27 0.05"  scale="0.21 0.1 0.28" color="#212121"></a-box>
+            </a-entity>
+        </a-entity>
+
+        <!-- ============================= -->
+        <!-- HUJAN KOIN EMAS                -->
+        <!-- ============================= -->
+        <!-- Setiap koin jatuh dari atas dengan waktu berbeda -->
+
+        <!-- Koin 1 -->
+        <a-cylinder position="-1.5 0 0.5" radius="0.14" height="0.06" color="#FFD700"
+            animation__pos="property: position; from: -1.5 4.5 0.5; to: -1.5 0 0.5; loop: true; dur: 1800; easing: easeInQuad; delay: 0"
+            animation__rot="property: rotation; from: 0 0 0; to: 0 720 0; loop: true; dur: 1800; easing: linear; delay: 0">
+        </a-cylinder>
+
+        <!-- Koin 2 -->
+        <a-cylinder position="0.5 0 1" radius="0.14" height="0.06" color="#FFD700"
+            animation__pos="property: position; from: 0.5 4.5 1; to: 0.5 0 1; loop: true; dur: 2200; easing: easeInQuad; delay: 400"
+            animation__rot="property: rotation; from: 0 0 0; to: 0 720 0; loop: true; dur: 2200; easing: linear; delay: 400">
+        </a-cylinder>
+
+        <!-- Koin 3 -->
+        <a-cylinder position="1.8 0 0.2" radius="0.14" height="0.06" color="#FFD700"
+            animation__pos="property: position; from: 1.8 4.5 0.2; to: 1.8 0 0.2; loop: true; dur: 1600; easing: easeInQuad; delay: 800"
+            animation__rot="property: rotation; from: 0 0 0; to: 0 720 0; loop: true; dur: 1600; easing: linear; delay: 800">
+        </a-cylinder>
+
+        <!-- Koin 4 -->
+        <a-cylinder position="-0.3 0 1.5" radius="0.14" height="0.06" color="#FFD700"
+            animation__pos="property: position; from: -0.3 4.5 1.5; to: -0.3 0 1.5; loop: true; dur: 2000; easing: easeInQuad; delay: 200"
+            animation__rot="property: rotation; from: 0 0 0; to: 0 720 0; loop: true; dur: 2000; easing: linear; delay: 200">
+        </a-cylinder>
+
+        <!-- Koin 5 -->
+        <a-cylinder position="2.5 0 1" radius="0.14" height="0.06" color="#FFD700"
+            animation__pos="property: position; from: 2.5 4.5 1; to: 2.5 0 1; loop: true; dur: 2400; easing: easeInQuad; delay: 1000"
+            animation__rot="property: rotation; from: 0 0 0; to: 0 720 0; loop: true; dur: 2400; easing: linear; delay: 1000">
+        </a-cylinder>
+
+        <!-- Koin 6 -->
+        <a-cylinder position="-2 0 1.2" radius="0.12" height="0.06" color="#FFD700"
+            animation__pos="property: position; from: -2 4.5 1.2; to: -2 0 1.2; loop: true; dur: 1900; easing: easeInQuad; delay: 600"
+            animation__rot="property: rotation; from: 0 0 0; to: 0 720 0; loop: true; dur: 1900; easing: linear; delay: 600">
+        </a-cylinder>
+
+        <!-- Koin 7 -->
+        <a-cylinder position="1 0 -0.5" radius="0.13" height="0.06" color="#FFD700"
+            animation__pos="property: position; from: 1 4.5 -0.5; to: 1 0 -0.5; loop: true; dur: 2100; easing: easeInQuad; delay: 1400"
+            animation__rot="property: rotation; from: 0 0 0; to: 0 720 0; loop: true; dur: 2100; easing: linear; delay: 1400">
+        </a-cylinder>
+
+        <!-- Koin 8 -->
+        <a-cylinder position="-0.8 0 -0.8" radius="0.13" height="0.06" color="#FFC107"
+            animation__pos="property: position; from: -0.8 4.5 -0.8; to: -0.8 0 -0.8; loop: true; dur: 2300; easing: easeInQuad; delay: 300"
+            animation__rot="property: rotation; from: 0 0 0; to: 0 -720 0; loop: true; dur: 2300; easing: linear; delay: 300">
+        </a-cylinder>
+
+        <!-- ============================= -->
+        <!-- BINTANG / POWER-UP MELAYANG   -->
+        <!-- ============================= -->
+        <!-- Bintang kuning melayang + berputar -->
+        <a-entity position="-1 1.5 0.8"
+            animation__float="property: position; from: -1 1.3 0.8; to: -1 2.0 0.8; loop: true; dir: alternate; dur: 1200; easing: easeInOutSine"
+            animation__spin="property: rotation; from: 0 0 0; to: 0 360 0; loop: true; dur: 2000; easing: linear">
+            <a-box scale="0.3 0.3 0.3" color="#FFD700"></a-box>
+            <a-box position="0 0.22 0" scale="0.12 0.22 0.12" color="#FFD700"></a-box>
+            <a-box position="0 -0.22 0" scale="0.12 0.22 0.12" color="#FFD700"></a-box>
+            <a-box position="0.22 0 0" scale="0.22 0.12 0.12" color="#FFD700"></a-box>
+            <a-box position="-0.22 0 0" scale="0.22 0.12 0.12" color="#FFD700"></a-box>
+        </a-entity>
+
+        <!-- Kotak merah power-up -->
+        <a-entity position="3 1.2 0.5"
+            animation__float="property: position; from: 3 1.0 0.5; to: 3 1.6 0.5; loop: true; dir: alternate; dur: 900; easing: easeInOutSine"
+            animation__spin="property: rotation; from: 0 0 0; to: 0 -360 0; loop: true; dur: 3000; easing: linear">
+            <a-box scale="0.4 0.4 0.4" color="#C62828"></a-box>
+            <a-box position="0 0 0.21" scale="0.25 0.25 0.01" color="#FFD700"></a-box>
+            <!-- Tanda tanya -->
+            <a-box position="0 0.07 0.22" scale="0.07 0.14 0.01" color="#FFD700"></a-box>
+            <a-box position="0 -0.08 0.22" scale="0.07 0.07 0.01" color="#FFD700"></a-box>
+        </a-entity>
+
+        <!-- ============================= -->
+        <!-- TULISAN "ROBLOX WORLD" 3D     -->
+        <!-- ============================= -->
+        <a-text value="ROBLOX WORLD"
+                position="0 3.2 -4"
+                align="center"
+                color="#FFD700"
+                width="8"
+                font="https://cdn.aframe.io/fonts/Exo2Bold.fnt"
+                animation="property: rotation; from: 0 -15 0; to: 0 15 0; loop: true; dir: alternate; dur: 3000; easing: easeInOutSine">
+        </a-text>
+
+        <!-- Sub-text -->
+        <a-text value="Scan marker Hiro"
+                position="0 2.7 -4"
+                align="center"
+                color="white"
+                width="5">
+        </a-text>
+
+        <!-- ============================= -->
+        <!-- LINGKARAN SPAWN / PORTAL      -->
+        <!-- ============================= -->
+        <a-torus position="0 0.05 0"
+                 radius="1.8"
+                 radius-tubular="0.06"
+                 color="#FFD700"
+                 animation="property: rotation; from: 90 0 0; to: 90 360 0; loop: true; dur: 5000; easing: linear">
+        </a-torus>
+        <!-- Ring luar -->
+        <a-torus position="0 0.05 0"
+                 radius="2.5"
+                 radius-tubular="0.04"
+                 color="#1565C0"
+                 animation="property: rotation; from: 90 0 0; to: 90 -360 0; loop: true; dur: 8000; easing: linear">
+        </a-torus>
+
+        <!-- Cahaya ambient -->
+        <a-light type="ambient" color="#FFFFFF" intensity="0.8"></a-light>
+        <a-light type="directional" position="4 6 -3" color="#FFF9C4" intensity="1.2"></a-light>
+
+    </a-marker>
+
+    <a-entity camera></a-entity>
+
 </a-scene>
-</body></html>
+</body>
+</html>
