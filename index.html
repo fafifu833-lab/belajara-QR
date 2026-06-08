@@ -1,28 +1,249 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>AR Pemandangan Roblox</title>
-    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
-    <script src="https://raw.githack.com/AR-js-org/AR.js/3.3.2/aframe/build/aframe-ar.js"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AR Dinosaurus - Hiro Marker</title>
+  <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+  <script src="https://raw.githack.com/AR-js-org/AR.js/3.3.2/aframe/build/aframe-ar.js"></script>
+  <style>
+    body { margin: 0; overflow: hidden; background: #000; }
+    #info {
+      position: fixed; top: 12px; left: 50%; transform: translateX(-50%);
+      background: rgba(0,0,0,0.6); color: #fff; padding: 6px 16px;
+      border-radius: 20px; font-family: sans-serif; font-size: 13px;
+      z-index: 999; pointer-events: none;
+    }
+  </style>
 </head>
-<body style="margin : 0px; overflow: hidden;">
-    <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3;">    
-        
-        <a-assets>
-            <a-asset-item id="pemandangan-roblox" src="URL_MODEL_ROBLOX_KAMU.glb"></a-asset-item>
-        </a-assets>
+<body>
+  <div id="info">📷 Arahkan kamera ke marker Hiro</div>
 
-        <a-marker preset="hiro">
-            
-            <a-entity gltf-model="#pemandangan-roblox" 
-                      position="0 0 0" 
-                      scale="0.05 0.05 0.05" 
-                      animation="property: rotation; to: 0 360 0; loop: true; dur: 15000">
+  <a-scene
+    embedded
+    arjs="sourceType: webcam; debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3;"
+    renderer="logarithmicDepthBuffer: true;"
+    vr-mode-ui="enabled: false">
+
+    <a-marker preset="hiro" id="marker">
+
+      <!-- ===================== DINOSAURUS T-REX ===================== -->
+      <!-- Semua bagian dikelompokkan dalam entity utama -->
+      <!-- Animasi berjalan: body goyang kiri-kanan + naik-turun       -->
+
+      <a-entity id="dino-root" position="0 0 0">
+
+        <!-- === TUBUH UTAMA === -->
+        <a-entity id="dino-body"
+          animation__walk="property: position; from: -0.5 0 0; to: 0.5 0 0; dir: alternate; loop: true; dur: 2000; easing: easeInOutSine"
+          animation__bob="property: position; from: -0.5 0.02 0; to: 0.5 0.02 0; dir: alternate; loop: true; dur: 2000; easing: easeInOutSine">
+
+          <!-- Badan utama -->
+          <a-box id="body-main"
+            position="0 0.55 0"
+            width="0.45" height="0.35" depth="0.7"
+            color="#4a7c4e"
+            animation__tilt="property: rotation; from: 0 0 -3; to: 0 0 3; dir: alternate; loop: true; dur: 500; easing: easeInOutSine">
+          </a-box>
+
+          <!-- Leher -->
+          <a-box
+            position="0 0.82 0.28"
+            width="0.22" height="0.3" depth="0.22"
+            rotation="-20 0 0"
+            color="#4a7c4e">
+          </a-box>
+
+          <!-- Kepala -->
+          <a-box id="head"
+            position="0 1.05 0.42"
+            width="0.28" height="0.22" depth="0.38"
+            color="#3d6b41"
+            animation__headbob="property: rotation; from: -5 0 -2; to: 5 0 2; dir: alternate; loop: true; dur: 500; easing: easeInOutSine">
+
+            <!-- Mata kiri -->
+            <a-sphere
+              position="-0.1 0.06 0.17"
+              radius="0.04"
+              color="#111">
+              <!-- Bola mata -->
+              <a-sphere position="0 0 0.02" radius="0.022" color="#fff"></a-sphere>
+              <a-sphere position="0.005 0.005 0.038" radius="0.012" color="#000"></a-sphere>
+            </a-sphere>
+
+            <!-- Mata kanan -->
+            <a-sphere
+              position="0.1 0.06 0.17"
+              radius="0.04"
+              color="#111">
+              <a-sphere position="0 0 0.02" radius="0.022" color="#fff"></a-sphere>
+              <a-sphere position="-0.005 0.005 0.038" radius="0.012" color="#000"></a-sphere>
+            </a-sphere>
+
+            <!-- Moncong -->
+            <a-box
+              position="0 -0.04 0.22"
+              width="0.22" height="0.1" depth="0.18"
+              color="#3d6b41">
+            </a-box>
+
+            <!-- Gigi atas -->
+            <a-box position="-0.05 -0.1 0.3" width="0.04" height="0.06" depth="0.04" color="#f5f5dc"></a-box>
+            <a-box position="0.05 -0.1 0.3" width="0.04" height="0.06" depth="0.04" color="#f5f5dc"></a-box>
+            <a-box position="0 -0.1 0.32" width="0.04" height="0.05" depth="0.04" color="#f5f5dc"></a-box>
+
+            <!-- Lubang hidung -->
+            <a-sphere position="-0.04 0 0.28" radius="0.02" color="#2a5230"></a-sphere>
+            <a-sphere position="0.04 0 0.28" radius="0.02" color="#2a5230"></a-sphere>
+          </a-box>
+
+          <!-- === EKOR === -->
+          <a-entity id="tail"
+            animation__wag="property: rotation; from: 0 -20 0; to: 0 20 0; dir: alternate; loop: true; dur: 600; easing: easeInOutSine">
+            <a-box
+              position="0 0.48 -0.45"
+              width="0.22" height="0.2" depth="0.35"
+              color="#4a7c4e">
+            </a-box>
+            <a-box
+              position="0 0.4 -0.72"
+              width="0.16" height="0.15" depth="0.28"
+              color="#5a8c5e">
+            </a-box>
+            <a-box
+              position="0 0.34 -0.92"
+              width="0.1" height="0.1" depth="0.22"
+              color="#5a8c5e">
+            </a-box>
+            <a-box
+              position="0 0.29 -1.08"
+              width="0.06" height="0.07" depth="0.16"
+              color="#6a9c6e">
+            </a-box>
+          </a-entity>
+
+          <!-- === TANGAN KECIL (kanan) === -->
+          <a-entity
+            animation__armr="property: rotation; from: 0 0 -30; to: 0 0 10; dir: alternate; loop: true; dur: 500">
+            <a-box
+              position="0.26 0.65 0.22"
+              width="0.08" height="0.16" depth="0.08"
+              rotation="30 0 20"
+              color="#3d6b41">
+            </a-box>
+            <a-box
+              position="0.3 0.52 0.28"
+              width="0.05" height="0.1" depth="0.05"
+              rotation="50 0 10"
+              color="#3d6b41">
+            </a-box>
+          </a-entity>
+
+          <!-- === TANGAN KECIL (kiri) === -->
+          <a-entity
+            animation__arml="property: rotation; from: 0 0 30; to: 0 0 -10; dir: alternate; loop: true; dur: 500">
+            <a-box
+              position="-0.26 0.65 0.22"
+              width="0.08" height="0.16" depth="0.08"
+              rotation="30 0 -20"
+              color="#3d6b41">
+            </a-box>
+            <a-box
+              position="-0.3 0.52 0.28"
+              width="0.05" height="0.1" depth="0.05"
+              rotation="50 0 -10"
+              color="#3d6b41">
+            </a-box>
+          </a-entity>
+
+          <!-- === KAKI BELAKANG KANAN === -->
+          <a-entity id="leg-r"
+            animation__legr="property: rotation; from: 15 0 0; to: -15 0 0; dir: alternate; loop: true; dur: 500; easing: easeInOutSine">
+            <!-- Paha kanan -->
+            <a-box
+              position="0.14 0.28 0.05"
+              width="0.14" height="0.28" depth="0.16"
+              color="#3d6b41">
+            </a-box>
+            <!-- Betis kanan -->
+            <a-entity
+              animation__shinr="property: rotation; from: 5 0 0; to: -20 0 0; dir: alternate; loop: true; dur: 500">
+              <a-box
+                position="0.14 0.06 0.1"
+                width="0.11" height="0.24" depth="0.12"
+                color="#4a7c4e">
+              </a-box>
+              <!-- Kaki kanan -->
+              <a-box
+                position="0.14 -0.06 0.18"
+                width="0.13" height="0.08" depth="0.22"
+                color="#3d6b41">
+              </a-box>
             </a-entity>
-            
-        </a-marker>
-        <a-entity camera></a-entity>
-        
-    </a-scene>
+          </a-entity>
+
+          <!-- === KAKI BELAKANG KIRI === -->
+          <a-entity id="leg-l"
+            animation__legl="property: rotation; from: -15 0 0; to: 15 0 0; dir: alternate; loop: true; dur: 500; easing: easeInOutSine">
+            <!-- Paha kiri -->
+            <a-box
+              position="-0.14 0.28 0.05"
+              width="0.14" height="0.28" depth="0.16"
+              color="#3d6b41">
+            </a-box>
+            <!-- Betis kiri -->
+            <a-entity
+              animation__shinl="property: rotation; from: -5 0 0; to: 20 0 0; dir: alternate; loop: true; dur: 500">
+              <a-box
+                position="-0.14 0.06 0.1"
+                width="0.11" height="0.24" depth="0.12"
+                color="#4a7c4e">
+              </a-box>
+              <!-- Kaki kiri -->
+              <a-box
+                position="-0.14 -0.06 0.18"
+                width="0.13" height="0.08" depth="0.22"
+                color="#3d6b41">
+              </a-box>
+            </a-entity>
+          </a-entity>
+
+          <!-- Sisik punggung -->
+          <a-box position="0 0.76 0.1" width="0.06" height="0.1" depth="0.06" rotation="0 0 0" color="#2a5230"></a-box>
+          <a-box position="0 0.76 -0.02" width="0.06" height="0.12" depth="0.06" color="#2a5230"></a-box>
+          <a-box position="0 0.76 -0.15" width="0.05" height="0.1" depth="0.05" color="#2a5230"></a-box>
+          <a-box position="0 0.74 -0.27" width="0.05" height="0.08" depth="0.05" color="#2a5230"></a-box>
+
+        </a-entity><!-- end dino-body -->
+
+        <!-- Bayangan / alas -->
+        <a-circle
+          position="0 0.01 0"
+          radius="0.5"
+          rotation="-90 0 0"
+          color="#000"
+          opacity="0.18">
+        </a-circle>
+
+      </a-entity><!-- end dino-root -->
+
+    </a-marker>
+
+    <a-entity camera></a-entity>
+
+  </a-scene>
+
+  <script>
+    const marker = document.getElementById('marker');
+    const info = document.getElementById('info');
+    marker.addEventListener('markerFound', () => {
+      info.textContent = '🦕 Dinosaurus terdeteksi!';
+      info.style.background = 'rgba(34,120,50,0.8)';
+    });
+    marker.addEventListener('markerLost', () => {
+      info.textContent = '📷 Arahkan kamera ke marker Hiro';
+      info.style.background = 'rgba(0,0,0,0.6)';
+    });
+  </script>
 </body>
 </html>
